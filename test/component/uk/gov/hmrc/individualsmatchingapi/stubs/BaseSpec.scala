@@ -45,14 +45,14 @@ trait BaseSpec
       "microservice.services.auth.port"            -> AuthStub.port,
       "microservice.services.citizen-details.port" -> CitizenDetailsStub.port,
       "microservice.services.matching.port"        -> MatchingStub.port,
-      "mongodb.uri"                                -> "mongodb://localhost:27017/nino-match-repository-it",
+      "mongodb.uri"                                -> "mongodb://127.0.0.1:27017/nino-match-repository-it",
       "run.mode"                                   -> "It",
       "versioning.unversionedContexts"             -> List("/match-record")
     )
     .build()
 
   val timeout = Duration(5, TimeUnit.SECONDS)
-  val serviceUrl = s"http://localhost:$port"
+  val serviceUrl = s"http://127.0.0.1:$port"
   val mocks = Seq(AuthStub, CitizenDetailsStub, MatchingStub)
   val mongoRepository = app.injector.instanceOf[NinoMatchRepository]
   val authToken = "Bearer AUTH_TOKEN"
@@ -88,6 +88,6 @@ trait BaseSpec
 
 case class MockHost(port: Int) {
   val server = new WireMockServer(WireMockConfiguration.wireMockConfig().port(port))
-  val mock = new WireMock("localhost", port)
-  val url = s"http://localhost:$port"
+  val mock = new WireMock("127.0.0.1", port)
+  val url = s"http://127.0.0.1:$port"
 }
